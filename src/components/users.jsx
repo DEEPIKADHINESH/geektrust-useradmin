@@ -3,6 +3,7 @@ import {getUser} from "../fakeUser";
 import Pagination from "../common/pagination";
 import { paginate } from "./paginate";
 import Searchbox from "../common/searchBox";
+import UsersTable from "./usersTable";
 class User extends Component{
     state={
        user:getUser(),
@@ -17,42 +18,38 @@ class User extends Component{
         //console.log(query)
         this.setState({searchQuery:query,currentPage:1})
     }
+    handleDelete=(users)=>{
+        const user=this.state.user.filter(m=>m.id !== users.id)
+        this.setState({user})
+    }
+    handleSelect=(users)=>{
+        const user=[...this.state.user]
+        const index=user.indexOf(users);
+        user[index]={...user[index]}
+        user[index].liked =!user[index].liked;
+        this.setState({user:user})
+    }
     getPagedData=()=>{
         let filtered=this.state.user
         if(this.state.searchQuery)
         filtered=this.state.user.filter(item=>
         {return (item.email||item.name||item.role).toLowerCase().startsWith(this.state.searchQuery.toLowerCase())})
-        const users=paginate(filtered,this.state.currentPage,this.state.pageSize)
-        return{users}
+        const user=paginate(filtered,this.state.currentPage,this.state.pageSize)
+        return{user}
     }
-    
-    
     render(){
-       const {users}=this.getPagedData()
+       const {user}=this.getPagedData()
+       const {currentPage,pageSize,searchQuery}=this.state;
         return(
       <div>
-            <Searchbox value={this.state.searchQuery} onChange={this.handleSearch}/>
-            <table className="table">
-                <thead>
-                    <tr style={{color:"blue"}}>
-                        <th>id</th>
-                        <th>Name</th>
-                        <th>Role</th>
-                        <th>Email</th>
-                    </tr>
-                </thead>
-                <tbody> 
-                    {users.map(users=>(<tr key={users.id}>
-                          <td>{users.id}</td>
-                          <td>{users.name}</td>
-                          <td>{users.role}</td>
-                          <td>{users.email}</td>
-                          </tr>))}
-                       </tbody>
-            </table>
-              <Pagination itemsCount={this.state.user.length}
-        currentPage={this.state.currentPage}
-        pageSize={this.state.pageSize}
+            <Searchbox value={searchQuery} 
+            onChange={this.handleSearch}/>
+             <UsersTable users={user}
+             onDelete={this.handleDelete}
+             onSelect={this.handleSelect}/>
+           <Pagination itemsCount={this.state.user.length}
+        currentPage={currentPage}
+        pageSize={pageSize}
         onPageChange={this.handlePageChange}
         />
         </div>
