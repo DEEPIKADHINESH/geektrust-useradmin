@@ -57,6 +57,7 @@ class User extends Component{
         currentPage={currentPage}
         pageSize={pageSize}
         onPageChange={this.handlePageChange}
+       onDelete={this.handleDelete}
         />
         </div>
         )
