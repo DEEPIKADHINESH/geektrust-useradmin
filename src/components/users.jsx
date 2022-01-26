@@ -20,7 +20,8 @@ class User extends Component{
     getPagedData=()=>{
         let filtered=this.state.user
         if(this.state.searchQuery)
-     filtered=this.state.user.filter(m=>m.role.toLowerCase().startsWith(this.state.searchQuery.toLowerCase()))
+        filtered=this.state.user.filter(item=>
+        {return (item.email||item.name||item.role).toLowerCase().startsWith(this.state.searchQuery.toLowerCase())})
         const users=paginate(filtered,this.state.currentPage,this.state.pageSize)
         return{users}
     }
