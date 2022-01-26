@@ -1,15 +1,21 @@
 import React,{Component} from "react";
-import {getUser} from "../fakeUser";
+//import {getUser} from "../fakeUser";
 import Pagination from "../common/pagination";
 import { paginate } from "./paginate";
 import Searchbox from "../common/searchBox";
 import UsersTable from "./usersTable";
+import httpService from "../service/httpService";
+import config from "../config.json"
 class User extends Component{
     state={
-       user:getUser(),
+       user:[],
        currentPage:1,
        pageSize:10,
        searchQuery:""
+    }
+   async componentDidMount(){
+        const{data:user}=await httpService.get(config.apiUrl)
+         this.setState({user})
     }
     handlePageChange=(page)=>{
         this.setState({currentPage:page})
@@ -19,7 +25,7 @@ class User extends Component{
         this.setState({searchQuery:query,currentPage:1})
     }
     handleDelete=(users)=>{
-        const user=this.state.user.filter(m=>m.id !== users.id)
+        const user= this.state.user.filter(m=>m.id !== users.id)
         this.setState({user})
     }
     handleSelect=(users)=>{
