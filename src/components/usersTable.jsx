@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import Select from "../common/select";
 class UsersTable extends Component{
+
     render(){
-        const{onDelete,onSelect,users}=this.props
+        const{onDelete,onSelect,users,onhandleEdit}=this.props
         return(
             <div>
                   <table className="table">
@@ -20,9 +21,12 @@ class UsersTable extends Component{
              <td><Select onClick={()=>onSelect(users)}
             liked= {users.liked}/>
              </td>   
-                  <td>{users.name}</td>
+                 <td>{users.name} </td>
                   <td>{users.role}</td>
                   <td>{users.email}</td>
+                  <td><i style={this.props.viewMode}onDoubleClick={onhandleEdit} value={users} className="fas fa-edit"></i>
+                  </td>
+                 
                 <td><i onClick={()=>onDelete(users)} style={{color:"red"}}
                 className="fa fa-trash-o" aria-hidden="true"></i></td>  
                   </tr>))}
