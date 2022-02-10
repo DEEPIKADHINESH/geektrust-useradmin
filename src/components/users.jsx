@@ -15,26 +15,27 @@ class User extends Component{
        
     }
    async componentDidMount(){
+    try{
         const{data:user}=await httpService.get(config.apiUrl)
          this.setState({user})
-         try{
-          const userId=this.props.match.params.id;
-          const {data:user}=await getUser(userId)
-         this.setState({data:this.mapToViewModel(user)})
-    }
+    } 
+        //   const userId=this.props.match.params.id;
+        //   const {data:user}=await getUser(userId)
+        //  this.setState({data:this.mapToViewModel(user)})
+    
     catch(ex){
         if( ex.response&&ex.response.status===404)
         console.log("error  occured")
 }
    }
-    mapToViewModel(userId){
-        return{
-            id:userId.id,
-            name:userId.name,
-            role:userId.role,
-            email:userId.email
-        }
-    }
+    // mapToViewModel(userId){
+    //     return{
+    //         id:userId.id,
+    //         name:userId.name,
+    //         role:userId.role,
+    //         email:userId.email
+    //     }
+    // }
     handlePageChange=(page)=>{
         this.setState({currentPage:page})
     }
