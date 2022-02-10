@@ -67,7 +67,7 @@ this.setState({user})
         let filtered=this.state.user
         if(this.state.searchQuery)
         filtered=this.state.user.filter(item=>
-        {return (item.role||item.email).toLowerCase().startsWith(this.state.searchQuery.toLowerCase())})
+        {return Object.keys(item).some(key=>item[key].toLowerCase().startsWith(this.state.searchQuery.toLowerCase()))})
         const user=paginate(filtered,this.state.currentPage,this.state.pageSize)
         return{user}
     }
